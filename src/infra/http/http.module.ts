@@ -38,8 +38,8 @@ import { FetchQuestionCommentsUseCase } from "@/domain/forum/application/use-cas
 import { FetchAnswerCommentsController } from "./controllers/fetch-answer-comments.controller";
 import { FetchAnswerCommentsUseCase } from "@/domain/forum/application/use-cases/fetch-answer-comments";
 import { UploadAttachmentController } from "./controllers/upload-attachment.controller";
-import { StorageModule } from "../storage/storage.module";
 import { UploadAndCreateAttachmentUseCase } from "@/domain/forum/application/use-cases/upload-and-create-attachment-use-case";
+import { StorageModule } from "../storage/storage.module";
 
 @Module({
   imports: [DatabaseModule, CryptographyModule, StorageModule],
