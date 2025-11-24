@@ -30,15 +30,11 @@ export class AnswerAttachmentFactory {
   ): Promise<AnswerAttachment> {
     const answerAttachment = makeAnswerAttachment(data);
 
-    console.log(answerAttachment);
-
     const attachament = await this.prisma.attachment.findFirst({
       where: {
         id: answerAttachment.attachmentId.toString(),
       },
     });
-
-    console.log(attachament);
 
     await this.prisma.attachment.update({
       where: {
