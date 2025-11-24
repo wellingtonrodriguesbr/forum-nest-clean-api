@@ -8,6 +8,7 @@ import { QuestionFactory } from "test/factories/make-question";
 import { StudentFactory } from "test/factories/make-student";
 import { DatabaseModule } from "@/infra/database/database.module";
 import { QuestionCommentFactory } from "test/factories/make-question-comment";
+import { a } from "vitest/dist/suite-CRLAhsm0";
 
 describe("Fetch question comments (E2E)", () => {
   let app: INestApplication;
@@ -32,7 +33,9 @@ describe("Fetch question comments (E2E)", () => {
   });
 
   test("[GET] /questions", async () => {
-    const user = await studentFactory.makePrismaStudent();
+    const user = await studentFactory.makePrismaStudent({
+      name: "John Doe",
+    });
 
     const accessToken = jwt.sign({ sub: user.id.toString() });
 
@@ -60,9 +63,15 @@ describe("Fetch question comments (E2E)", () => {
 
     expect(response.statusCode).toBe(200);
     expect(response.body).toEqual({
-      questionComments: expect.arrayContaining([
-        expect.objectContaining({ content: "New question comment created" }),
-        expect.objectContaining({ content: "New question comment created 2" }),
+      comments: expect.arrayContaining([
+        expect.objectContaining({
+          content: "New question comment created",
+          authorName: "John Doe",
+        }),
+        expect.objectContaining({
+          content: "New question comment created 2",
+          authorName: "John Doe",
+        }),
       ]),
     });
   });
