@@ -11,7 +11,7 @@ export interface QuestionDetailsProps {
   slug: Slug;
   content: string;
   attachments: Attachment[];
-  bestAnswerId?: UniqueEntityId;
+  bestAnswerId?: UniqueEntityId | null;
   createdAt: Date;
   updatedAt?: Date | null;
 }

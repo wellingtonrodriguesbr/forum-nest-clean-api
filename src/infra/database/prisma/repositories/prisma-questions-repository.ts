@@ -6,6 +6,8 @@ import { Question } from "@/domain/forum/enterprise/entities/question";
 import { PrismaService } from "../prisma.service";
 import { PrismaQuestionMapper } from "../mappers/prisma-question-mapper";
 import { QuestionAttachmentsRepository } from "@/domain/forum/application/repositories/question-attachments-repository";
+import { QuestionDetails } from "@/domain/forum/enterprise/entities/value-objects/question-details";
+import { PrismaQuestionDetailsMapper } from "../mappers/prisma-question-details-mapper";
 
 @Injectable()
 export class PrismaQuestionsRepository implements QuestionsRepository {
@@ -46,7 +48,7 @@ export class PrismaQuestionsRepository implements QuestionsRepository {
     ]);
   }
 
-  async findBySlug(slug: string) {
+  async findBySlug(slug: string): Promise<Question | null> {
     const question = await this.prismaService.question.findUnique({
       where: {
         slug,
@@ -60,7 +62,25 @@ export class PrismaQuestionsRepository implements QuestionsRepository {
     return PrismaQuestionMapper.toDomain(question);
   }
 
-  async findManyRecent(params: PaginationParams) {
+  async findDetailsBySlug(slug: string): Promise<QuestionDetails | null> {
+    const question = await this.prismaService.question.findUnique({
+      where: {
+        slug,
+      },
+      include: {
+        author: true,
+        attachments: true,
+      },
+    });
+
+    if (!question) {
+      return null;
+    }
+
+    return PrismaQuestionDetailsMapper.toDomain(question);
+  }
+
+  async findManyRecent(params: PaginationParams): Promise<Question[]> {
     const questions = await this.prismaService.question.findMany({
       orderBy: {
         createdAt: "desc",
@@ -72,7 +92,7 @@ export class PrismaQuestionsRepository implements QuestionsRepository {
     return questions.map(PrismaQuestionMapper.toDomain);
   }
 
-  async findById(questionId: string) {
+  async findById(questionId: string): Promise<Question | null> {
     const question = await this.prismaService.question.findUnique({
       where: {
         id: questionId,
