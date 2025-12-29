@@ -36,6 +36,11 @@ Esta aplicação é uma API completa para gerenciamento de um fórum, permitindo
   - Editar e deletar comentários
   - Listar comentários
 
+- **Notificações**
+
+  - Recebimento de notificações em eventos importantes
+  - Marcar notificações como lidas
+
 - **Upload de Arquivos**
   - Upload de anexos para AWS S3/Cloudflare R2
   - Vinculação de anexos a perguntas e respostas
@@ -84,6 +89,7 @@ src/
 - **[TypeScript](https://www.typescriptlang.org/)** - Superset JavaScript com tipagem estática
 - **[Prisma](https://www.prisma.io/)** - ORM moderno para Node.js
 - **[PostgreSQL](https://www.postgresql.org/)** - Banco de dados relacional
+- **[Redis](https://redis.io/)** - Banco de dados in-memory para cache
 - **[JWT](https://jwt.io/)** - Autenticação baseada em tokens
 - **[bcryptjs](https://github.com/dcodeIO/bcrypt.js)** - Hash de senhas
 - **[Zod](https://zod.dev/)** - Validação de schemas
@@ -124,6 +130,11 @@ DATABASE_URL="postgresql://root:root@localhost:5432/nestcleandb?schema=public"
 
 # Server
 PORT=3333
+
+# Redis (Opcional - Defaults)
+REDIS_HOST="127.0.0.1"
+REDIS_PORT=6379
+REDIS_DB=0
 
 # JWT
 JWT_PRIVATE_KEY="sua-chave-privada"
@@ -307,6 +318,12 @@ Deletar comentário de uma pergunta (requer autenticação).
 
 Deletar comentário de uma resposta (requer autenticação).
 
+### Notificações
+
+#### PATCH /notifications/:notificationId/read
+
+Marcar uma notificação como lida (requer autenticação).
+
 ### Anexos
 
 #### POST /attachments
@@ -322,6 +339,7 @@ Fazer upload de um anexo (requer autenticação).
 - **Answer**: Respostas às perguntas
 - **Comment**: Comentários em perguntas ou respostas
 - **Attachment**: Anexos vinculados a perguntas ou respostas
+- **Notification**: Notificações enviadas aos usuários
 
 ## 📝 Scripts Disponíveis
 
